@@ -1,0 +1,33 @@
+/* Apply background color to the entire app */
+.anchor-pane {
+    -fx-background-color: #f4f6f9; /* Light grayish background */
+    -fx-padding: 15px;
+}
+
+/* Ensure smooth layout for all VBox elements */
+.vbox {
+    -fx-background-color: white;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3);
+    -fx-padding: 10px;
+}
+
+/* Header container */
+#headerContainer {
+    -fx-background-color: linear-gradient(to right, #0073e6, #003366);
+    -fx-border-radius: 10px;
+    -fx-padding: 15px;
+    -fx-spacing: 10px; /* Internal spacing */
+    -fx-margin-bottom: 20px; /* Extra space below the header */
+}
+
+/* Movie list container */
+#movielistContainer {
+    -fx-background-color: #ffffff; /* Clean white background */
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
+}
