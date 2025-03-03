@@ -5,7 +5,7 @@ import java.util.List;
 
 //Define "Model", in this case the structure of a movie, later we
 //can add here entity classes in combination with mappers such as hibernate or whatever
-public class Movie {
+public class Movie  {
     private final String title;
     private final String description;
     private final List<Genre> genres;
@@ -16,6 +16,7 @@ public class Movie {
 
     public List<Genre> getGenres() { return genres; }
 
+    //maybe should not use varargs 🤔 ? that means a Movie could be created without a genre, for now its fine I guess
     public Movie(String title, String description, Genre... genres) {
         this.title = title;
         this.description = description;
