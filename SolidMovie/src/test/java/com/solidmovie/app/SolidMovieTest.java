@@ -21,6 +21,7 @@ class SolidMovieTest extends ApplicationTest {
 
     @Start
     public void start(Stage stage) {
+
         this.stage = stage;
         SolidMovie solidMovie = new SolidMovie();
         try {

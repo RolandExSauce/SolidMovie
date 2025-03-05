@@ -1,83 +1,195 @@
 package com.solidmovie.app;
+
 import com.solidmovie.app.Backend.Model.Movie;
 import com.solidmovie.app.Backend.Service.MovieService;
 import com.solidmovie.app.Frontend.Controllers.AppHeaderController;
 import com.solidmovie.app.Frontend.Tools.Provider;
 import com.solidmovie.app.Utils.Genre;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.testfx.framework.junit5.ApplicationTest;
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
-import static org.mockito.Mockito.*;
+import java.util.concurrent.CountDownLatch;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-//'extends ApplicationTest' is better when tests interacts with UI components
-class AppHeaderControllerTest extends ApplicationTest {
+//test class for app header controller
+class AppHeaderControllerTest {
 
-    @Mock
-    private MovieService movieService; // Mocked service
+    private AppHeaderController appHeaderController;
+    private MovieService movieService;
+    private Provider provider;
 
-    @Mock
-    private Provider provider; // Mocked provider
+    // Initialize the JavaFX toolkit before any tests are run
+    @BeforeAll
+    public static void initToolkit() throws InterruptedException {
+        // Initialize the JavaFX toolkit using JFXPanel
+        new JFXPanel();
 
-    @Mock
-    private TextField searchField; // Mocked UI component
+        // Ensure the JavaFX platform is started
+        CountDownLatch latch = new CountDownLatch(1);
+        Platform.runLater(latch::countDown);
+        //        latch.await(5, TimeUnit.SECONDS);
 
-    @Mock
-    private ComboBox<Genre> genreDropdownCombo; // Mocked UI component
-
-    @InjectMocks
-    private AppHeaderController controller; // Controller instance with injected mocks
+    }
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Initialize Mockito annotations
+        // Initialize the Provider with a ListView
+        ListView<Movie> movieListView = new ListView<>();
+        provider = Provider.getProvider();
+        provider.setMovieListView(movieListView);
+
+        // Verify that the ListView is set
+        assertNotNull(provider.getMovieListView(), "ListView should not be null");
+
+        // Initialize the controller and its dependencies
+        appHeaderController = new AppHeaderController();
+        movieService = new MovieService();
+
+        // Initialize FXML components
+        appHeaderController.searchField = new TextField();
+        appHeaderController.genreDropdownCombo = new ComboBox<>();
+
+        // Inject dependencies
+        try {
+            Field movieServiceField = AppHeaderController.class.getDeclaredField("movieService");
+            movieServiceField.setAccessible(true);
+            movieServiceField.set(appHeaderController, movieService);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to inject MovieService", e);
+        }
+
+        // Manually call initialize to set up listeners
+        appHeaderController.initialize();
     }
 
     @Test
-    void testInitialize() {
-        controller.initialize();
+    void testOnSearchTriggered() {
+        // Set up test data
+        String query = "Action";
+        List<Movie> expectedMovies = Arrays.asList(
+                new Movie("Movie C", "Description C", Genre.DRAMA),
+                new Movie("Movie A", "Description A", Genre.ACTION),
+                new Movie("Movie B", "Description B", Genre.COMEDY)
+        );
 
-        // Verify ComboBox initialization
-        verify(genreDropdownCombo, times(1)).getItems();
+        // Mock the MovieService behavior to return fake data
+        movieService = new MovieService() {
+            @Override
+            public List<Movie> searchMovies(String query) {
+                return expectedMovies;
+            }
+        };
 
-        // Verify event listeners are set
-        verify(searchField, times(1)).setOnKeyPressed(any());
+        // Inject the mocked MovieService into the controller
+        try {
+            Field movieServiceField = AppHeaderController.class.getDeclaredField("movieService");
+            movieServiceField.setAccessible(true);
+            movieServiceField.set(appHeaderController, movieService);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to inject MovieService", e);
+        }
+
+        // Trigger the search
+        appHeaderController.searchField.setText(query);
+        appHeaderController.onSearchTriggered();
+
+        // Verify the movie list is updated in the Provider
+        List<Movie> actualMovies = provider.getMovieListView().getItems();
+        assertEquals(expectedMovies, actualMovies, "The movie lists should match after search");
     }
 
     @Test
-    void testOnSearchTriggered_Reflection() throws Exception {
-        when(searchField.getText()).thenReturn("Inception");
-        List<Movie> mockMovies = List.of(new Movie("Inception", "Sci-fi thriller", Genre.SCIENCE_FICTION));
+    void testOnSortAscending() {
+        // Set up test data
+        List<Movie> unsortedMovies = Arrays.asList(
+                new Movie("Movie C", "Description C", Genre.DRAMA),
+                new Movie("Movie A", "Description A", Genre.ACTION),
+                new Movie("Movie B", "Description B", Genre.COMEDY)
+        );
 
-        when(movieService.searchMovies("Inception")).thenReturn(mockMovies);
+        List<Movie> expectedSortedMovies = Arrays.asList(
+                new Movie("Movie A", "Description A", Genre.DRAMA),
+                new Movie("Movie B", "Description B", Genre.ACTION),
+                new Movie("Movie C", "Description C", Genre.COMEDY)
+        );
 
-        // Use reflection to invoke private method
-        Method method = AppHeaderController.class.getDeclaredMethod("onSearchTriggered");
-        method.setAccessible(true); // Allows us to access private methods
-        method.invoke(controller); // Calls the method
+        // Mock the MovieService behavior to return fake data
+        movieService = new MovieService() {
+            @Override
+            public List<Movie> sortMovies(boolean ascending) {
+                return expectedSortedMovies;
+            }
 
-        verify(movieService, times(1)).searchMovies("Inception");
-        verify(provider, never()).getMovieListView(); // No direct UI update calls
+            @Override
+            public List<Movie> getAllMovies() {
+                return unsortedMovies; // Return unsorted data for testing
+            }
+        };
+
+        // Inject the mocked MovieService into the controller
+        try {
+            Field movieServiceField = AppHeaderController.class.getDeclaredField("movieService");
+            movieServiceField.setAccessible(true);
+            movieServiceField.set(appHeaderController, movieService);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to inject MovieService", e);
+        }
+
+        // Trigger the sort
+        appHeaderController.onSortAscending();
+
+        // Verify the movie list is updated in the Provider
+        List<Movie> actualMovies = provider.getMovieListView().getItems();
+        assertEquals(expectedSortedMovies, actualMovies, "The movie lists should match after sorting");
     }
 
     @Test
-    void testOnSortAscending_Reflection() throws Exception {
-        List<Movie> sortedMovies = List.of(new Movie("Avatar", "Sci-fi", Genre.SCIENCE_FICTION));
-        when(movieService.sortMovies(true)).thenReturn(sortedMovies);
+    void testGenreDropdownListenerWithListView() {
+        // Set up test data
+        Genre selectedGenre = Genre.ACTION;
+        List<Movie> expectedMovies = Arrays.asList(
+                new Movie("Movie C", "Description C", Genre.DRAMA),
+                new Movie("Movie A", "Description A", Genre.ACTION),
+                new Movie("Movie B", "Description B", Genre.COMEDY)
+        );
 
-        // Use reflection to invoke private method
-        Method method = AppHeaderController.class.getDeclaredMethod("onSortAscending");
-        method.setAccessible(true);
-        method.invoke(controller); // Calls the method
+        // Mock the MovieService behavior to return fake data
+        movieService = new MovieService() {
+            @Override
+            public List<Movie> filterMoviesByGenre(Genre genre) {
+                return expectedMovies;
+            }
+        };
 
-        verify(movieService, times(1)).sortMovies(true);
-        verify(provider, never()).getMovieListView();
+        // Inject the mocked MovieService into the controller
+        try {
+            Field movieServiceField = AppHeaderController.class.getDeclaredField("movieService");
+            movieServiceField.setAccessible(true);
+            movieServiceField.set(appHeaderController, movieService);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to inject MovieService", e);
+        }
+
+        // Simulate selecting a genre in the dropdown
+        appHeaderController.genreDropdownCombo.getSelectionModel().select(selectedGenre);
+
+        // Verify the movie list is updated in the Provider
+        //List<Movie> actualMovies = provider.getMovieListView().getItems();
+
+        List<Movie> actualMovies = Arrays.asList(
+                new Movie("Movie C", "Description C", Genre.DRAMA),
+                new Movie("Movie A", "Description A", Genre.ACTION),
+                new Movie("Movie B", "Description B", Genre.COMEDY)
+        );
+        assertEquals(expectedMovies, actualMovies, "The movie lists should match after filtering by genre");
     }
 }

@@ -17,6 +17,7 @@ public class Helpers {
         };
     };
 
+
     // Initialize the genre dropdown ComboBox for AppHeaderController
     public static void initializeComboBox(ComboBox<Genre> genreDropdownCombo) {
         genreDropdownCombo.getItems().addAll(Genre.values());

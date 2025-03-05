@@ -15,7 +15,13 @@ public class MovieListViewController {
 
     public ListView<Movie> getMovieListView() { return movieListView; };
 
-    private final MovieService movieService = new MovieService();  //load mock data
+    private final MovieService movieService = new MovieService();
+
+    // Constructor for dependency injection
+//    public MovieListViewController(MovieService movieService) {
+//        this.movieService = movieService;
+//    };
+
 
     @FXML
     public void initialize() {

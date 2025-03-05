@@ -1,5 +1,6 @@
 package com.solidmovie.app.Utils;
 
+
 // Enum to hold the genres
 public enum Genre {
     NONE("Filter by Genre"),

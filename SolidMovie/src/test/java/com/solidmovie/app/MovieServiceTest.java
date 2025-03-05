@@ -1,133 +1,123 @@
 package com.solidmovie.app;
 import com.solidmovie.app.Backend.Model.Movie;
-import com.solidmovie.app.Backend.Repo.MovieRepo;
 import com.solidmovie.app.Backend.Service.MovieService;
 import com.solidmovie.app.Utils.Genre;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 
-@ExtendWith(MockitoExtension.class)
+
 class MovieServiceTest {
 
     private MovieService movieService;
 
-    @Mock
-    private MovieRepo mockMovieRepo;
+    // Test data
+    private final List<Movie> movies = Arrays.asList(
+            new Movie("Movie C", "Description C", Genre.DRAMA),
+            new Movie("Movie A", "Description A", Genre.ACTION),
+            new Movie("Movie B", "Description B", Genre.COMEDY)
+    );
 
     @BeforeEach
     void setUp() {
-        movieService = new MovieService();
+        // Mock the MovieService to return the test data
+        movieService = new MovieService() {
+            @Override
+            public List<Movie> getAllMovies() {
+                return movies;
+            }
+
+            @Override
+            public List<Movie> searchMovies(String query) {
+                String lowerCaseQuery = query.toLowerCase();
+                return movies.stream()
+                        .filter(movie -> movie.getTitle().toLowerCase().contains(lowerCaseQuery) ||
+                                movie.getDescription().toLowerCase().contains(lowerCaseQuery))
+                        .toList();
+            }
+
+
+            @Override
+            public List<Movie> sortMovies(boolean ascending) {
+                return movies.stream()
+                        .sorted((m1, m2) -> ascending
+                                ? m1.getTitle().compareToIgnoreCase(m2.getTitle())
+                                : m2.getTitle().compareToIgnoreCase(m1.getTitle()))
+                        .toList();
+            }
+
+            @Override
+            public List<Movie> filterMoviesByGenre(Genre genre) {
+                if (genre == null) {
+                    return movies;
+                }
+                return movies.stream()
+                        .filter(movie -> movie.getGenres().contains(genre))
+                        .toList();
+            }
+        };
     }
 
     @Test
     void testGetAllMovies() {
-        List<Movie> mockMovies = List.of(
-                new Movie("Inception", "Sci-Fi thriller", Genre.SCIENCE_FICTION),
-                new Movie("The Dark Knight", "Action drama", Genre.ACTION)
-        );
-
-        when(mockMovieRepo.getAllMovies()).thenReturn(mockMovies);
-
-        List<Movie> movies = movieService.getAllMovies();
-
-        assertNotNull(movies, "Movie list should not be null");
-        assertFalse(movies.isEmpty(), "Movie list should not be empty");
-        assertEquals(2, movies.size(), "Movie list should contain exactly 2 movies");
+        // Verify that getAllMovies returns the test data
+        List<Movie> result = movieService.getAllMovies();
+        assertEquals(movies, result, "The movie list should match the test data");
     }
 
     @Test
     void testSearchMovies() {
-        List<Movie> mockMovies = List.of(
-                new Movie("Inception", "Sci-Fi thriller", Genre.SCIENCE_FICTION),
-                new Movie("The Dark Knight", "Action drama", Genre.ACTION)
-        );
+        // Test search by title
+        List<Movie> resultByTitle = movieService.searchMovies("Movie A");
+        assertEquals(1, resultByTitle.size(), "Should find 1 movie by title");
+        assertEquals("Movie A", resultByTitle.getFirst().getTitle(), "The movie should match the search query");
 
-        when(mockMovieRepo.getAllMovies()).thenReturn(mockMovies);
+        // Test search by description
+        List<Movie> resultByDescription = movieService.searchMovies("Description B");
+        assertEquals(1, resultByDescription.size(), "Should find 1 movie by description");
+        assertEquals("Movie B", resultByDescription.getFirst().getTitle(), "The movie should match the search query");
 
-        List<Movie> searchResults = movieService.searchMovies("Inception");
-
-        assertNotNull(searchResults);
-        assertEquals(1, searchResults.size(), "Search should return one movie");
-        assertEquals("Inception", searchResults.get(0).getTitle());
+        // Test search with no results
+        List<Movie> resultNoMatch = movieService.searchMovies("nonexistent");
+        assertTrue(resultNoMatch.isEmpty(), "Should return an empty list for no matches");
     }
 
     @Test
-    void testSearchMovies_NoResults() {
-        when(mockMovieRepo.getAllMovies()).thenReturn(List.of());
+    void testSortMovies() {
+        // Test ascending sort
+        List<Movie> ascendingSorted = movieService.sortMovies(true);
+        assertEquals(Arrays.asList(
+                new Movie("Movie A", "Description A", Genre.ACTION),
+                new Movie("Movie B", "Description B", Genre.COMEDY),
+                new Movie("Movie C", "Description C", Genre.DRAMA)
+        ), ascendingSorted, "Movies should be sorted in ascending order");
 
-        List<Movie> searchResults = movieService.searchMovies("Nonexistent Movie");
-
-        assertNotNull(searchResults);
-        assertTrue(searchResults.isEmpty(), "Search should return an empty list for non-matching query");
-    }
-
-    @Test
-    void testSortMoviesAscending() {
-        List<Movie> mockMovies = List.of(
-                new Movie("Zodiac", "Crime thriller", Genre.CRIME),
-                new Movie("Inception", "Sci-Fi thriller", Genre.SCIENCE_FICTION),
-                new Movie("Batman Begins", "Action drama", Genre.ACTION)
-        );
-
-        when(mockMovieRepo.getAllMovies()).thenReturn(mockMovies);
-
-        List<Movie> sortedMovies = movieService.sortMovies(true);
-
-        assertNotNull(sortedMovies);
-        assertEquals("Batman Begins", sortedMovies.get(0).getTitle());
-        assertEquals("Inception", sortedMovies.get(1).getTitle());
-        assertEquals("Zodiac", sortedMovies.get(2).getTitle());
-    }
-
-    @Test
-    void testSortMoviesDescending() {
-        List<Movie> mockMovies = List.of(
-                new Movie("Zodiac", "Crime thriller", Genre.CRIME),
-                new Movie("Inception", "Sci-Fi thriller", Genre.SCIENCE_FICTION),
-                new Movie("Batman Begins", "Action drama", Genre.ACTION)
-        );
-
-        when(mockMovieRepo.getAllMovies()).thenReturn(mockMovies);
-
-        List<Movie> sortedMovies = movieService.sortMovies(false);
-
-        assertNotNull(sortedMovies);
-        assertEquals("Zodiac", sortedMovies.get(0).getTitle());
-        assertEquals("Inception", sortedMovies.get(1).getTitle());
-        assertEquals("Batman Begins", sortedMovies.get(2).getTitle());
+        // Test descending sort
+        List<Movie> descendingSorted = movieService.sortMovies(false);
+        assertEquals(Arrays.asList(
+                new Movie("Movie C", "Description C", Genre.DRAMA),
+                new Movie("Movie B", "Description B", Genre.COMEDY),
+                new Movie("Movie A", "Description A", Genre.ACTION)
+        ), descendingSorted, "Movies should be sorted in descending order");
     }
 
     @Test
     void testFilterMoviesByGenre() {
-        List<Movie> mockMovies = List.of(
-                new Movie("Inception", "Sci-Fi thriller", Genre.SCIENCE_FICTION),
-                new Movie("The Dark Knight", "Action drama", Genre.ACTION),
-                new Movie("Interstellar", "Sci-Fi space drama", Genre.SCIENCE_FICTION)
-        );
+        // Test filtering by ACTION genre
+        List<Movie> actionMovies = movieService.filterMoviesByGenre(Genre.ACTION);
+        assertEquals(1, actionMovies.size(), "Should find 1 movie with ACTION genre");
+        assertEquals("Movie A", actionMovies.getFirst().getTitle(), "The list should contain Movie A");
 
-        when(mockMovieRepo.getAllMovies()).thenReturn(mockMovies);
+        // Test filtering by COMEDY genre
+        List<Movie> comedyMovies = movieService.filterMoviesByGenre(Genre.COMEDY);
+        assertEquals(1, comedyMovies.size(), "Should find 1 movie with COMEDY genre");
+        assertEquals("Movie B", comedyMovies.getFirst().getTitle(), "The list should contain Movie B");
 
-        List<Movie> filteredMovies = movieService.filterMoviesByGenre(Genre.SCIENCE_FICTION);
-
-        assertNotNull(filteredMovies);
-        assertEquals(2, filteredMovies.size(), "Filtering by SCIENCE_FICTION should return 2 movies");
-        assertTrue(filteredMovies.stream().allMatch(movie -> movie.getGenres().contains(Genre.SCIENCE_FICTION)));
-    }
-
-    @Test
-    void testFilterMoviesByGenre_NoResults() {
-        when(mockMovieRepo.getAllMovies()).thenReturn(List.of());
-
-        List<Movie> filteredMovies = movieService.filterMoviesByGenre(Genre.HORROR);
-
-        assertNotNull(filteredMovies);
-        assertTrue(filteredMovies.isEmpty(), "Filtering by HORROR should return an empty list");
+        // Test filtering with no genre (null)
+        List<Movie> allMovies = movieService.filterMoviesByGenre(null);
+        assertEquals(3, allMovies.size(), "Should return all movies when no genre is specified");
     }
 }

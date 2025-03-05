@@ -1,7 +1,9 @@
 module com.solidmovie.app {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.swing;
     requires static lombok;
+    //requires org.mockito;
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
 

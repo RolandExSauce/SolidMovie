@@ -17,11 +17,16 @@ public class AppHeaderController {
     private static final Provider provider = Provider.getProvider();
 
     @FXML
-    private TextField searchField;
+    public TextField searchField;
 
-    @FXML private ComboBox<Genre> genreDropdownCombo;
+    @FXML public ComboBox<Genre> genreDropdownCombo;
 
     private final MovieService movieService = new MovieService();
+
+    // Constructor for dependency injection
+//    public AppHeaderController(MovieService movieService) {
+//        this.movieService = movieService;
+//    };
 
     //init method
     @FXML
@@ -43,14 +48,14 @@ public class AppHeaderController {
     };
     /******************************************************************************************************************/
     //search will be triggered on enter click
-    private void onSearchTriggered() {
+    public void onSearchTriggered() {
         String query = searchField.getText();
         List<Movie> filteredMovies = movieService.searchMovies(query);
         Helpers.updateMovieList(filteredMovies, provider);
     };
     /******************************************************************************************************************/
     @FXML
-    private void onSortAscending() {
+    public void onSortAscending() {
         Helpers.updateMovieList(
                 movieService.sortMovies(true), provider);
     };
