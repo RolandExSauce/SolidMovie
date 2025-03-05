@@ -3,36 +3,22 @@ import com.solidmovie.app.Backend.Model.Movie;
 import com.solidmovie.app.Backend.Service.MovieService;
 import com.solidmovie.app.Frontend.Controllers.MovieListViewController;
 import com.solidmovie.app.Utils.Genre;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.ListView;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.ApplicationExtension;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
+//movie list view controller class
+@ExtendWith(ApplicationExtension.class)
 public class MovieListViewControllerTest {
 
     private MovieListViewController movieListViewController;
-
-    // Initialize the JavaFX toolkit before any tests are run
-    @BeforeAll
-    public static void initToolkit() throws InterruptedException {
-        // Initialize the JavaFX toolkit using JFXPanel
-        new JFXPanel();
-
-        // Ensure the JavaFX platform is started
-        CountDownLatch latch = new CountDownLatch(1);
-        Platform.runLater(latch::countDown);
-        latch.await(5, TimeUnit.SECONDS);
-    }
 
     @BeforeEach
     public void setUp() {

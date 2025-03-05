@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
-//for exercise 2, fetch from this API
+//for exercise 2, fetch from this swagger API
 //https://prog2.fh-campuswien.ac.at/swagger-ui/index.html#/movie-controller/getMovies
 
 
