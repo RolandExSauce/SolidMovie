@@ -11,6 +11,7 @@ import org.testfx.framework.junit5.Start;
 import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @ExtendWith(ApplicationExtension.class)
 public class MainControllerTest {
 
