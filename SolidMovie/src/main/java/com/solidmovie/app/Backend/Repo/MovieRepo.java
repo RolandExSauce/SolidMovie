@@ -7,6 +7,9 @@ import java.util.List;
 //movie repo, will act like a database for now
 public class MovieRepo {
 
+
+    //TODO: update this to an movie array ?? not sure yet
+
     //instantiate list of movies
     private static final List<Movie> MOVIES = List.of(
             new Movie("Inception", "A thief who enters the dreams of others to steal their secrets.", Genre.SCIENCE_FICTION, Genre.ACTION, Genre.THRILLER),

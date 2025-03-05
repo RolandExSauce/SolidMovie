@@ -1,5 +1,6 @@
 package com.solidmovie.app.Frontend.Controllers;
 import com.solidmovie.app.Backend.Model.Movie;
+import com.solidmovie.app.Backend.Model.MovieAPI;
 import com.solidmovie.app.Backend.Service.MovieService;
 import com.solidmovie.app.Frontend.Tools.Helpers;
 import com.solidmovie.app.Frontend.Tools.Listeners;
@@ -54,9 +55,16 @@ public class AppHeaderController {
         Helpers.updateMovieList(filteredMovies, provider);
     };
     /******************************************************************************************************************/
+    //sort alphabetically
     @FXML
     public void onSortAscending() {
-        Helpers.updateMovieList(
-                movieService.sortMovies(true), provider);
+
+        //System.out.println("Request sent to backend");
+       new MovieAPI().sendRequest();
+
+
+
+//        Helpers.updateMovieList(
+//                movieService.sortMovies(true), provider);
     };
 }
