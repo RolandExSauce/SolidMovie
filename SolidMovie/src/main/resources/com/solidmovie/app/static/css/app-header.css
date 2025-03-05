@@ -1,0 +1,73 @@
+/* Apply background color to the entire header */
+.anchor-pane {
+    -fx-background-color: linear-gradient(to right, #0073e6, #003366);
+    -fx-padding: 10px;
+}
+
+/* Adjust VBox to reduce spacing and move the header up */
+.vbox {
+    -fx-alignment: center-left;
+    -fx-padding: 0px 20px 0px 20px; /* Reduce top padding */
+}
+
+/* Style the main title */
+.label {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #021E73;
+    -fx-padding: 5px;
+    -fx-alignment: center-left;
+}
+
+/* Align label inside VBox */
+.vbox {
+    -fx-alignment: center-left;
+    -fx-padding: 5px 20px;
+}
+
+/* Style the HBox container for controls */
+/* Reduce the HBox spacing to bring elements closer */
+.hbox {
+    -fx-alignment: center-left;
+    -fx-spacing: 8px;
+    -fx-padding: 0px; /* Ensure no extra padding */
+}
+
+/* Style the Search TextField */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #003366;
+    -fx-font-size: 14px;
+    -fx-border-color: #005bb5;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Style the Genre ComboBox */
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #005bb5;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #003366;
+}
+
+/* Style buttons */
+.button {
+    -fx-background-color: #005bb5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 10px;
+    -fx-cursor: hand;
+    -fx-transition: 0.3s;
+}
+
+/* Hover effect for buttons */
+.button:hover {
+    -fx-background-color: #0073e6;
+}
+
+/* Pressed effect for buttons */
+.button:pressed {
+    -fx-background-color: #004080;
+}

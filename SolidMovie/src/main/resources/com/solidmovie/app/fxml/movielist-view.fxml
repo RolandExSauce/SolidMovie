@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.solidmovie.app.Frontend.Controllers.MovieListViewController"
+            stylesheets="@/com/solidmovie/app/static/css/movielist-view.css"
+            prefHeight="600.0" prefWidth="1300.0">
+
+    <!-- ListView to display movies -->
+    <ListView fx:id="movieListView" prefWidth="1280.0" prefHeight="580.0"
+              AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0"
+              AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"/>
+</AnchorPane>
