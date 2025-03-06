@@ -17,9 +17,9 @@ class MovieServiceTest {
 
     // Centralized test data
     private final List<Movie> movies = List.of(
-            new Movie("Movie C", "Description C", Genre.DRAMA),
-            new Movie("Movie A", "Description A", Genre.ACTION),
-            new Movie("Movie B", "Description B", Genre.COMEDY)
+            new Movie("Movie A", "Description A", List.of(Genre.ACTION)),
+            new Movie("Movie B", "Description B", List.of(Genre.COMEDY)),
+            new Movie("Movie C", "Description C", List.of(Genre.DRAMA))
     );
 
     @BeforeEach
@@ -35,8 +35,8 @@ class MovieServiceTest {
             public List<Movie> searchMovies(String query) {
                 String lowerCaseQuery = query.toLowerCase();
                 return movies.stream()
-                        .filter(movie -> movie.getTitle().toLowerCase().contains(lowerCaseQuery) ||
-                                movie.getDescription().toLowerCase().contains(lowerCaseQuery))
+                        .filter(movie -> movie.title().toLowerCase().contains(lowerCaseQuery) ||
+                                movie.description().toLowerCase().contains(lowerCaseQuery))
                         .toList();
             }
 
@@ -44,8 +44,8 @@ class MovieServiceTest {
             public List<Movie> sortMovies(boolean ascending) {
                 return movies.stream()
                         .sorted((m1, m2) -> ascending
-                                ? m1.getTitle().compareToIgnoreCase(m2.getTitle())
-                                : m2.getTitle().compareToIgnoreCase(m1.getTitle()))
+                                ? m1.title().compareToIgnoreCase(m2.title())
+                                : m2.title().compareToIgnoreCase(m1.title()))
                         .toList();
             }
 
@@ -53,7 +53,7 @@ class MovieServiceTest {
             public List<Movie> filterMoviesByGenre(Genre genre) {
                 return (genre == null)
                         ? movies
-                        : movies.stream().filter(movie -> movie.getGenres().contains(genre)).toList();
+                        : movies.stream().filter(movie -> movie.genres().contains(genre)).toList();
             }
         };
     };
@@ -79,18 +79,19 @@ class MovieServiceTest {
                 "Should find 1 movie by description"
         );
 
-        assertTrue(movieService.searchMovies("nonexistent").isEmpty(), "Should return an empty list for no matches");
+        assertTrue(movieService.searchMovies("nonexistent").isEmpty(),
+                "Should return an empty list for no matches");
     };
 
 
     @Test
     void testSortMovies() {
         List<Movie> ascendingExpected = movies.stream()
-                .sorted((m1, m2) -> m1.getTitle().compareToIgnoreCase(m2.getTitle()))
+                .sorted((m1, m2) -> m1.title().compareToIgnoreCase(m2.title()))
                 .collect(Collectors.toList());
 
         List<Movie> descendingExpected = movies.stream()
-                .sorted((m1, m2) -> m2.getTitle().compareToIgnoreCase(m1.getTitle()))
+                .sorted((m1, m2) -> m2.title().compareToIgnoreCase(m1.title()))
                 .collect(Collectors.toList());
 
         assertEquals(ascendingExpected, movieService.sortMovies(true), "Movies should be sorted in ascending order");

@@ -1,4 +1,3 @@
-
 package com.solidmovie.app.Frontend.Controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -8,23 +7,17 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import com.solidmovie.app.Backend.Model.Movie;
 import com.solidmovie.app.Backend.Service.MovieService;
+import lombok.Getter;
 import java.util.List;
 
 
 //Movie list controller
 public class MovieListViewController {
 
-    @FXML private ListView<Movie> movieListView;
-
-    public ListView<Movie> getMovieListView() { return movieListView; };
+    @Getter
+    @FXML private ListView<Movie> movieListView;;
 
     private final MovieService movieService = new MovieService();
-
-    // Constructor for dependency injection
-//    public MovieListViewController(MovieService movieService) {
-//        this.movieService = movieService;
-//    };
-
 
     @FXML
     public void initialize() {
@@ -50,16 +43,16 @@ public class MovieListViewController {
                             vbox.setStyle("-fx-padding: 10px; -fx-background-color: #444444;");
 
                             // Title (bold, yellow)
-                            Label titleLabel = new Label(movie.getTitle());
+                            Label titleLabel = new Label(movie.title());
                             titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #ffd21b;");
 
                             // Description (normal, white)
-                            Label descriptionLabel = new Label(movie.getDescription());
+                            Label descriptionLabel = new Label(movie.description());
                             descriptionLabel.setWrapText(true);
                             descriptionLabel.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 12px;");
 
                             // Genres (italic, grey)
-                            Label genreLabel = new Label(String.join(", ", movie.getGenres().toString()));
+                            Label genreLabel = new Label(String.join(", ", movie.genres().toString()));
                             genreLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #cccccc; -fx-font-size: 12px;");
 
                             // Add elements to VBox
