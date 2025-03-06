@@ -12,7 +12,7 @@ public class MovieService {
     private final MovieRepo movieRepository = new MovieRepo();
 
     public List<Movie> getAllMovies() {
-        return movieRepository.getAllMovies();
+        return movieRepository.getMOVIES();
     }
     /******************************************************************************************************************/
     // Search movie by title or description
@@ -22,7 +22,7 @@ public class MovieService {
         }
 
         String lowerCaseQuery = query.toLowerCase();
-        return movieRepository.getAllMovies().stream()
+        return movieRepository.getMOVIES().stream()
                 .filter(movie -> movie.title().toLowerCase().contains(lowerCaseQuery) ||
                         movie.description().toLowerCase().contains(lowerCaseQuery))
                 .collect(Collectors.toList());
@@ -31,7 +31,7 @@ public class MovieService {
     // Sorting movies alphabetically by title
     public List<Movie> sortMovies(boolean ascending) {
 
-        return movieRepository.getAllMovies().stream()
+        return movieRepository.getMOVIES().stream()
                 //expects a Comparator, since it's a functional interface, we can pass a lambda
                 //function instead of writing a full class (would need to implement Comparator and explicitly override
                 // compare with logic below
@@ -47,7 +47,7 @@ public class MovieService {
     public List<Movie> filterMoviesByGenre(Genre selectedGenre) {
         //return all movies if no genre filter is applied
         if (selectedGenre == null) { return getAllMovies(); }
-        return movieRepository.getAllMovies()
+        return movieRepository.getMOVIES()
                 .stream()
                 .filter(movie -> movie.genres().contains(selectedGenre))
                 .collect(Collectors.toList()); // convert the stream back to a list

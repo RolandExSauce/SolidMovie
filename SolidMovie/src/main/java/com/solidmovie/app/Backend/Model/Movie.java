@@ -4,15 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.solidmovie.app.Utils.Genre;
 import java.util.List;
 
-
-//Define "Model", in this case the structure of a movie, later we
-//can add here entity classes in combination with mappers such as hibernate or whatever
-
-//record class
-public record Movie(String id, String title, List<Genre> genres, Integer releaseYear, String description, String imgUrl,
-                    Integer lengthInMinutes, List<String> directors, List<String> writers, List<String> mainCast,
-                    Integer rating) {
-
+//movie model record
+public record Movie(String id, String title, List<Genre> genres,
+                    Integer releaseYear, String description, String imgUrl,
+                    Integer lengthInMinutes, List<String> directors, List<String> writers,
+                    List<String> mainCast, Integer rating) {
     //for simplified tests we will use this constructor so that we don't have to create
     //a movie with all the fields from the second constructor
     public Movie (String title, String description, List<Genre> genres){
@@ -21,7 +17,7 @@ public record Movie(String id, String title, List<Genre> genres, Integer release
                 description,null,null,
                 null,null,null,null
         );
-    }
+    };
 
     //use json creator for deserialization and json property to specify the field
     //for efficient mapping
@@ -50,24 +46,6 @@ public record Movie(String id, String title, List<Genre> genres, Integer release
         this.title = title;
         this.description = description;
         this.genres = genres;
-    };
-    /******************************************************************************************************************/
-    //override to string for readable output of toString
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id='" + id + '\'' +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", releaseYear=" + releaseYear +
-                ", imgUrl='" + imgUrl + '\'' +
-                ", lengthInMinutes=" + lengthInMinutes +
-                ", genres=" + genres +
-                ", directors=" + directors +
-                ", writers=" + writers +
-                ", mainCast=" + mainCast +
-                ", rating=" + rating +
-                '}';
     };
 }
 
