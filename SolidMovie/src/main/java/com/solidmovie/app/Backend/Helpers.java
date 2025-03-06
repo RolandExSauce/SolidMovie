@@ -1,13 +1,11 @@
 package com.solidmovie.app.Backend;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solidmovie.app.Backend.Model.Movie;
 
 public class Helpers {
 
 
-   public static void convertResponse (String res) {
+   public static Movie[] convertResponse (String res) {
        //convert json response coming as string to list
        //ObjectMapper mapper = new ObjectMapper(); // use Jackson for parsing
        try {
@@ -25,11 +23,14 @@ public class Helpers {
            for (Movie movie : movies) {
                System.out.println("Printing out converted response: " + movie);
            }
+
+           return movies;
        }
        catch (Exception e) {
            System.out.println("Error converting response " + e);
        }
 
+       return null;
    }
 
 }

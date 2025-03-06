@@ -65,8 +65,8 @@ public class MovieListViewControllerTest {
         // Assert
         List<Movie> actualMovies = movieListViewController.getMovieListView().getItems();
         assertEquals(3, actualMovies.size(), "The number of movies should match");
-        assertEquals("Movie C", actualMovies.get(0).getTitle(), "First movie title should match");
-        assertEquals("Movie A", actualMovies.get(1).getTitle(), "Second movie title should match");
-        assertEquals("Movie B", actualMovies.get(2).getTitle(), "Third movie title should match");
+        assertEquals("Movie C", actualMovies.get(0).title(), "First movie title should match");
+        assertEquals("Movie A", actualMovies.get(1).title(), "Second movie title should match");
+        assertEquals("Movie B", actualMovies.get(2).title(), "Third movie title should match");
     }
 }

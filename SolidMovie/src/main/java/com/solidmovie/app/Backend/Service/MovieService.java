@@ -11,11 +11,6 @@ public class MovieService {
 
     private final MovieRepo movieRepository = new MovieRepo();
 
-    // use dependency injection
-//    public MovieService(MovieRepo movieRepository) {
-//        this.movieRepository = movieRepository;
-//    };
-
     public List<Movie> getAllMovies() {
         return movieRepository.getAllMovies();
     }
@@ -28,8 +23,8 @@ public class MovieService {
 
         String lowerCaseQuery = query.toLowerCase();
         return movieRepository.getAllMovies().stream()
-                .filter(movie -> movie.getTitle().toLowerCase().contains(lowerCaseQuery) ||
-                        movie.getDescription().toLowerCase().contains(lowerCaseQuery))
+                .filter(movie -> movie.title().toLowerCase().contains(lowerCaseQuery) ||
+                        movie.description().toLowerCase().contains(lowerCaseQuery))
                 .collect(Collectors.toList());
     }
     /******************************************************************************************************************/
@@ -42,8 +37,8 @@ public class MovieService {
                 //function instead of writing a full class, lambda function acts here as a custom comparator
                 .sorted((m1, m2) ->
                         ascending
-                                ? m1.getTitle().compareToIgnoreCase(m2.getTitle())
-                                : m2.getTitle().compareToIgnoreCase(m1.getTitle())
+                                ? m1.title().compareToIgnoreCase(m2.title())
+                                : m2.title().compareToIgnoreCase(m1.title())
                 )
                 .collect(Collectors.toList());
     };
@@ -56,7 +51,7 @@ public class MovieService {
 
         return movieRepository.getAllMovies()
                 .stream()
-                .filter(movie -> movie.getGenres().contains(selectedGenre))
+                .filter(movie -> movie.genres().contains(selectedGenre))
                 .collect(Collectors.toList()); // convert the stream back to a list
     };
 }

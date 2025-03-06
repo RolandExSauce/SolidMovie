@@ -1,37 +1,36 @@
 package com.solidmovie.app.Backend.Model;
-import com.solidmovie.app.Backend.Helpers;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+//for exercise 2, fetch from this swagger api: https://prog2.fh-campuswien.ac.at
+// In browser you will get => no explicit mapping exist so  use e.g. for a GET request
+// to fetch the array of json object: /movies
 
-//movie api class
+
+//movie api class to fetch data from endpoint
 public class MovieAPI {
 
-    public final String endPointUrl = "https://prog2.fh-campuswien.ac.at/movies?genre=ACTION";
-
-    public MovieAPI() { };
+    public final String endPointUrl = "https://prog2.fh-campuswien.ac.at/movies";
 
     //http client
-    HttpClient client = HttpClient.newHttpClient();
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(endPointUrl))
-            .build();
+    static final HttpClient client = HttpClient.newHttpClient();
 
-    //method to send get request
-    public void sendRequest() {
+    // Method to fetch movies and return the raw JSON response
+    public String fetchMovies() {
         try {
-            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                    .thenApply(HttpResponse::body)
-                    .thenAccept((res) -> {
-                        Helpers.convertResponse(res);
-                    })
-                    .join();
-        }
-        catch(Exception e) {
-            System.out.println("Exception: " + e);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(endPointUrl))
+                    .build();
+
+            //send request synchronously and return the response body
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return response.body(); // Returning the JSON string
+        } catch (Exception e) {
+            System.err.println("Error fetching movies: " + e.getMessage());
+            return null;
         }
     }
 }

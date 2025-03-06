@@ -24,11 +24,6 @@ public class AppHeaderController {
 
     private final MovieService movieService = new MovieService();
 
-    // Constructor for dependency injection
-//    public AppHeaderController(MovieService movieService) {
-//        this.movieService = movieService;
-//    };
-
     //init method
     @FXML
     public void initialize() {

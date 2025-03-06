@@ -5,6 +5,7 @@ import com.solidmovie.app.Backend.Model.Movie;
 
 //provider singleton class, though for now we could access movieListView directly from MovieListViewController
 public class Provider {
+
     private static final Provider instance = new Provider();
     private ListView<Movie> movieListView;
 
@@ -13,7 +14,7 @@ public class Provider {
             System.err.println("Warning: movieListView is null!");
         }
         return movieListView;
-    }
+    };
 
     public void setMovieListView(ListView<Movie> movieListView) {
         if (movieListView == null) {
