@@ -1,20 +1,14 @@
 /* Apply background color to the entire header */
 .anchor-pane {
-    -fx-background-color: linear-gradient(to right, #0073e6, #003366);
+    -fx-background-color: #454545;
     -fx-padding: 10px;
-}
-
-/* Adjust VBox to reduce spacing and move the header up */
-.vbox {
-    -fx-alignment: center-left;
-    -fx-padding: 0px 20px 0px 20px; /* Reduce top padding */
 }
 
 /* Style the main title */
 .label {
     -fx-font-size: 26px;
     -fx-font-weight: bold;
-    -fx-text-fill: #021E73;
+    -fx-text-fill: #ffffff;
     -fx-padding: 5px;
     -fx-alignment: center-left;
 }
@@ -26,48 +20,56 @@
 }
 
 /* Style the HBox container for controls */
-/* Reduce the HBox spacing to bring elements closer */
 .hbox {
     -fx-alignment: center-left;
-    -fx-spacing: 8px;
+    -fx-spacing: 25px;
     -fx-padding: 0px; /* Ensure no extra padding */
+    -fx-margin-bottom: 15px; /* Hinzugefügt für Margin unten */
 }
 
 /* Style the Search TextField */
 .text-field {
     -fx-background-color: #ffffff;
-    -fx-text-fill: #003366;
+    -fx-text-fill: #ffa81a;
     -fx-font-size: 14px;
-    -fx-border-color: #005bb5;
-    -fx-border-radius: 5px;
+    -fx-border-color: #ffa81a;
+    -fx-border-radius: 10px;
+    -fx-pref-height: 30px;
     -fx-padding: 5px;
+
+    -fx-background-insets: 0;
+    -fx-background-radius: 10px;
 }
 
 /* Style the Genre ComboBox */
 .combo-box {
     -fx-background-color: white;
-    -fx-border-color: #005bb5;
+    -fx-border-color: #ffa81a;
     -fx-border-radius: 5px;
-    -fx-text-fill: #003366;
+    -fx-pref-height: 30px;
+    -fx-text-fill: #ffa81a;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10px;
 }
 
 /* Style buttons */
 .button {
-    -fx-background-color: #005bb5;
+    -fx-background-color: #ffa81a;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-border-radius: 5px;
     -fx-padding: 5px 10px;
     -fx-cursor: hand;
+    -fx-pref-height: 30px;
     -fx-transition: 0.3s;
 }
 
 /* Hover effect for buttons */
 .button:hover {
-    -fx-background-color: #0073e6;
+    -fx-background-color: #ffa81f;
 }
 
 /* Pressed effect for buttons */
 .button:pressed {
-    -fx-background-color: #004080;
+    -fx-background-color: #f8a81a;
 }
