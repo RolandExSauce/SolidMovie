@@ -1,4 +1,5 @@
 package com.solidmovie.app.Frontend.Controllers;
+import com.solidmovie.app.Utils.Genre;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -37,29 +38,26 @@ public class MovieListViewController {
                             setText(null);
                             setGraphic(null);
                         } else {
-                            // Create VBox layout
-                            VBox vbox = new VBox();
-                            vbox.setSpacing(5); // Space between elements
-                            vbox.setStyle("-fx-padding: 10px; -fx-background-color: #444444;");
+                            // Load FXML for each cell
+                            VBox movieCell = new VBox();
+                            movieCell.getStyleClass().add("movie-cell");
 
-                            // Title (bold, yellow)
                             Label titleLabel = new Label(movie.title());
-                            titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #ffd21b;");
+                            titleLabel.getStyleClass().add("movie-title");
 
-                            // Description (normal, white)
                             Label descriptionLabel = new Label(movie.description());
+                            descriptionLabel.getStyleClass().add("movie-description");
                             descriptionLabel.setWrapText(true);
-                            descriptionLabel.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 12px;");
 
-                            // Genres (italic, grey)
-                            Label genreLabel = new Label(String.join(", ", movie.genres().toString()));
-                            genreLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #cccccc; -fx-font-size: 12px;");
+                            Label genreLabel = new Label(String.join(", ", movie.genres().stream()
+                                    .map(Genre::toString) // convert each Genre to a String
+                                    .toList())); // collect as a List<String>
 
-                            // Add elements to VBox
-                            vbox.getChildren().addAll(titleLabel, descriptionLabel, genreLabel);
+                            genreLabel.getStyleClass().add("movie-genre");
 
-                            // Set VBox as the content of the cell
-                            setGraphic(vbox);
+                            movieCell.getChildren().addAll(titleLabel, descriptionLabel, genreLabel);
+                            setGraphic(movieCell);
+
                         }
                     }
                 };

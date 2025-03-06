@@ -4,7 +4,8 @@ import com.solidmovie.app.Backend.Model.Movie;
 
 
 
-public class Helpers {
+//helper class to extract methods
+public class BackendHelper {
 
     //convert http response to
    public static Movie[] convertResponse (String res) {

@@ -13,7 +13,7 @@ public record Movie(String id, String title, List<Genre> genres, Integer release
                     Integer lengthInMinutes, List<String> directors, List<String> writers, List<String> mainCast,
                     Integer rating) {
 
-    //for simplified tests we will use this constructor so that we dont have to create
+    //for simplified tests we will use this constructor so that we don't have to create
     //a movie with all the fields from the second constructor
     public Movie (String title, String description, List<Genre> genres){
         this(
@@ -23,6 +23,8 @@ public record Movie(String id, String title, List<Genre> genres, Integer release
         );
     }
 
+    //use json creator for deserialization and json property to specify the field
+    //for efficient mapping
     @JsonCreator
     public Movie(
             @JsonProperty("id") String id,

@@ -16,7 +16,7 @@ public class MovieService {
     }
     /******************************************************************************************************************/
     // Search movie by title or description
-    public List<Movie> searchMovies(String query) {
+    public List<Movie> searchMovieByFilteringList(String query) {
         if (query == null || query.trim().isEmpty()) {
             return getAllMovies(); // Return all movies if no search term is provided
         }
@@ -26,15 +26,15 @@ public class MovieService {
                 .filter(movie -> movie.title().toLowerCase().contains(lowerCaseQuery) ||
                         movie.description().toLowerCase().contains(lowerCaseQuery))
                 .collect(Collectors.toList());
-    }
+    };
     /******************************************************************************************************************/
     // Sorting movies alphabetically by title
     public List<Movie> sortMovies(boolean ascending) {
 
         return movieRepository.getAllMovies().stream()
-                //We are using sorted with this method signature: Stream<T> sorted(Comparator<? super T> comparator)
-                //therefore it expects a Comparator<T> as an arg, since it's a functional interface, we can pass a lambda
-                //function instead of writing a full class, lambda function acts here as a custom comparator
+                //expects a Comparator, since it's a functional interface, we can pass a lambda
+                //function instead of writing a full class (would need to implement Comparator and explicitly override
+                // compare with logic below
                 .sorted((m1, m2) ->
                         ascending
                                 ? m1.title().compareToIgnoreCase(m2.title())
@@ -43,12 +43,10 @@ public class MovieService {
                 .collect(Collectors.toList());
     };
     /******************************************************************************************************************/
-    // Filter movies by genre
+    //Filter movies by genre
     public List<Movie> filterMoviesByGenre(Genre selectedGenre) {
-        if (selectedGenre == null) {
-            return getAllMovies(); // Return all movies if no genre filter is applied
-        }
-
+        //return all movies if no genre filter is applied
+        if (selectedGenre == null) { return getAllMovies(); }
         return movieRepository.getAllMovies()
                 .stream()
                 .filter(movie -> movie.genres().contains(selectedGenre))

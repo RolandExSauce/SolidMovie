@@ -28,11 +28,16 @@ public class MainController {
 
             Node loadedNode = loader.load(); //load specified fxml file and get root node
             targetContainer.getChildren().add(loadedNode); //add loaded node to target VBOX
+            Object c = loader.getController();
 
-            //for now init just for this controller
-            if (loader.getController() instanceof MovieListViewController movieListViewController) {
+            if (c instanceof MovieListViewController movieListViewController) {
                 provider.setMovieListView(movieListViewController.getMovieListView());
             };
+
+            if((c instanceof AppHeaderController appHeaderController) ){
+                provider.setGenreDropdownCombo(appHeaderController.getGenreDropdownCombo());
+            };
+
         } catch (IOException e) {
             System.err.println("Error loading FXML: " + fxmlPath + " - " + e.getMessage());
         }

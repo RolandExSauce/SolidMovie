@@ -7,7 +7,7 @@ import java.util.List;
 
 
 //helper class to extract methods here
-public class Helpers {
+public class FrontendHelper {
 
     //update the movie list
     public static void updateMovieList(List<Movie> movies, Provider provider) {

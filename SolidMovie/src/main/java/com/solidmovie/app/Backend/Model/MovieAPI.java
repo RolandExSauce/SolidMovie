@@ -1,8 +1,8 @@
 package com.solidmovie.app.Backend.Model;
-import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.URI;
 
 //for exercise 2, fetch from this swagger api: https://prog2.fh-campuswien.ac.at
 // In browser you will get => no explicit mapping exist so  use e.g. for a GET request
@@ -27,7 +27,7 @@ public class MovieAPI {
             //send request synchronously and return the response body
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            return response.body(); // Returning the JSON string
+            return response.body(); // returning the JSON string
         } catch (Exception e) {
             System.err.println("Error fetching movies: " + e.getMessage());
             return null;
