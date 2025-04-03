@@ -67,23 +67,22 @@ public class Listeners {
                 filteredMovies = movieService.getAllMovies();
             } else {
                 filteredMovies = movieService.filterMoviesByCriteria(newValue, null, null);
-            }
+            };
 
             // Apply search query filtering **only if there is text**
             String query = searchField.getText().trim();
+
             if (!query.isEmpty()) {
                 String lowerCaseQuery = query.toLowerCase();
                 filteredMovies = filteredMovies.stream()
                         .filter(movie -> movie.title().toLowerCase().contains(lowerCaseQuery)
                                 || movie.description().toLowerCase().contains(lowerCaseQuery))
                         .collect(Collectors.toList());
-            }
-
-
-            // Update UI with the final filtered list
+            };
+            // update UI with the final filtered list
             FrontendHelper.updateMovieList(filteredMovies, provider);
         });
-    }
+    };
     /******************************************************************************************************************/
     public static void addComboReleaseYearListener(
             TextField searchField,
@@ -111,7 +110,6 @@ public class Listeners {
                                 || movie.description().toLowerCase().contains(lowerCaseQuery))
                         .collect(Collectors.toList());
             }
-
 
             // Update UI with the final filtered list
             FrontendHelper.updateMovieList(filteredMovies, provider);
@@ -144,7 +142,6 @@ public class Listeners {
                                 || movie.description().toLowerCase().contains(lowerCaseQuery))
                         .collect(Collectors.toList());
             }
-
 
             // Update UI with the final filtered list
             FrontendHelper.updateMovieList(filteredMovies, provider);

@@ -39,6 +39,14 @@
     -fx-font-size: 12px;
 }
 
+
+/* Movie genre */
+.release-year-and-rating {
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 12px;
+}
+
+
 /* Style individual list items */
 .list-cell {
     -fx-background-color: #444444;

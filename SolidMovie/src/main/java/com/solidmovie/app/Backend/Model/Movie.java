@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.solidmovie.app.Utils.Genre;
 import java.util.List;
 
+
 //movie model record
 public record Movie(String id, String title, List<Genre> genres,
                     Integer releaseYear, String description, String imgUrl,

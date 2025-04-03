@@ -52,12 +52,22 @@ public class MovieListViewController {
                             Label genreLabel = new Label(String.join(", ", movie.genres().stream()
                                     .map(Genre::toString) // convert each Genre to a String
                                     .toList())); // collect as a List<String>
-
                             genreLabel.getStyleClass().add("movie-genre");
 
-                            movieCell.getChildren().addAll(titleLabel, descriptionLabel, genreLabel);
-                            setGraphic(movieCell);
+                            Label releaseYear = new Label("Release Year: "+ movie.releaseYear());
+                            releaseYear.getStyleClass().add("release-year-and-rating");
 
+                            Label rating = new Label("Rating: "+ movie.rating());
+                            rating.getStyleClass().add("release-year-and-rating");
+
+                            movieCell.getChildren().addAll(
+                                    titleLabel,
+                                    descriptionLabel,
+                                    genreLabel,
+                                    releaseYear,
+                                    rating
+                            );
+                            setGraphic(movieCell);
                         }
                     }
                 };
