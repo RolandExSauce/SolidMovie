@@ -1,7 +1,9 @@
 package com.solidmovie.app.Backend.Service;
 import com.solidmovie.app.Backend.Model.Movie;
 import com.solidmovie.app.Backend.Repo.MovieRepo;
+import com.solidmovie.app.Backend.Utils.MovieFilters;
 import com.solidmovie.app.Utils.Genre;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.List;
 
@@ -43,13 +45,13 @@ public class MovieService {
                 .collect(Collectors.toList());
     };
     /******************************************************************************************************************/
-    //Filter movies by genre
-    public List<Movie> filterMoviesByGenre(Genre selectedGenre) {
-        //return all movies if no genre filter is applied
-        if (selectedGenre == null) { return getAllMovies(); }
-        return movieRepository.getMOVIES()
-                .stream()
-                .filter(movie -> movie.genres().contains(selectedGenre))
-                .collect(Collectors.toList()); // convert the stream back to a list
+    public List<Movie> filterMoviesByCriteria(Genre genre, Double minRating, Integer releaseYear) {
+        Predicate<Movie> filter = MovieFilters.byGenre(genre)
+                .and(MovieFilters.byRating(minRating))
+                .and(MovieFilters.byReleaseYear(releaseYear));
+        return movieRepository.getMOVIES().stream()
+                .filter(filter)
+                .collect(Collectors.toList());
     };
+
 }

@@ -34,8 +34,10 @@ public class MainController {
                 provider.setMovieListView(movieListViewController.getMovieListView());
             };
 
-            if((c instanceof AppHeaderController appHeaderController) ){
+            if((c instanceof AppHeaderController appHeaderController)){
                 provider.setGenreDropdownCombo(appHeaderController.getGenreDropdownCombo());
+                provider.setRatingDropdownCombo(appHeaderController.getRatingDropdownCombo());
+                provider.setReleaseYearDropdownCombo(appHeaderController.getReleaseYearDropdownCombo());
             };
 
         } catch (IOException e) {

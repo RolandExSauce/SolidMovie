@@ -20,6 +20,12 @@ public class AppHeaderController {
     @Getter
     @FXML public ComboBox<Genre> genreDropdownCombo;
 
+    @Getter
+    @FXML public ComboBox<String> releaseYearDropdownCombo;
+
+    @Getter
+    @FXML public ComboBox<String> ratingDropdownCombo;
+
     private final MovieService movieService = new MovieService();
 
     //init method
@@ -27,11 +33,17 @@ public class AppHeaderController {
     public void initialize() {
 
         //initialize ComboBox
-        FrontendHelper.initializeComboBox(genreDropdownCombo);
-
+        FrontendHelper.initializeComboBoxes(
+                movieService,
+                genreDropdownCombo,
+                releaseYearDropdownCombo,
+                ratingDropdownCombo
+        );
         //pass args to listener methods
         Listeners.addSearchTxtFieldListener(searchField,genreDropdownCombo, movieService, provider);
         Listeners.addComboGenreListener(searchField, genreDropdownCombo, movieService, provider);
+        Listeners.addComboReleaseYearListener(searchField, releaseYearDropdownCombo, movieService, provider);
+        Listeners.addComboRatingListener(searchField, ratingDropdownCombo, movieService, provider);
     };
     /******************************************************************************************************************/
     @FXML

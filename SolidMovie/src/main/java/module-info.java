@@ -12,6 +12,5 @@ module com.solidmovie.app {
     opens com.solidmovie.app.Utils to com.fasterxml.jackson.databind;
     opens com.solidmovie.app to javafx.fxml;
     opens com.solidmovie.app.Frontend.Controllers to javafx.fxml;
-
     exports com.solidmovie.app;
 }

@@ -27,7 +27,7 @@ public class Listeners {
             if (query.isEmpty()) {
                 // If the search field is empty but a genre is selected, filter by genre only
                 if (selectedGenre != null && selectedGenre != Genre.NONE) {
-                    filteredMovies = movieService.filterMoviesByGenre(selectedGenre);
+                    filteredMovies = movieService.filterMoviesByCriteria(selectedGenre, null, null);
                 } else {
                     // If no genre is selected, show all movies
                     filteredMovies = movieService.getAllMovies();
@@ -66,7 +66,7 @@ public class Listeners {
             if (newValue == Genre.NONE) {
                 filteredMovies = movieService.getAllMovies();
             } else {
-                filteredMovies = movieService.filterMoviesByGenre(newValue);
+                filteredMovies = movieService.filterMoviesByCriteria(newValue, null, null);
             }
 
             // Apply search query filtering **only if there is text**
@@ -84,5 +84,71 @@ public class Listeners {
             FrontendHelper.updateMovieList(filteredMovies, provider);
         });
     }
+    /******************************************************************************************************************/
+    public static void addComboReleaseYearListener(
+            TextField searchField,
+            ComboBox<String> genreDropdown,
+            MovieService movieService,
+            Provider provider
+    ) {
+        genreDropdown.valueProperty().addListener((
+                observable, oldValue, newValue) -> {
+            List<Movie> filteredMovies;
+
+            // If no genre is selected, fallback to all movies
+            if (newValue == "Filter by Release Year") {
+                filteredMovies = movieService.getAllMovies();
+            } else {
+                filteredMovies = movieService.filterMoviesByCriteria(null, Double.valueOf(newValue), null);
+            }
+
+            // Apply search query filtering **only if there is text**
+            String query = searchField.getText().trim();
+            if (!query.isEmpty()) {
+                String lowerCaseQuery = query.toLowerCase();
+                filteredMovies = filteredMovies.stream()
+                        .filter(movie -> movie.title().toLowerCase().contains(lowerCaseQuery)
+                                || movie.description().toLowerCase().contains(lowerCaseQuery))
+                        .collect(Collectors.toList());
+            }
+
+
+            // Update UI with the final filtered list
+            FrontendHelper.updateMovieList(filteredMovies, provider);
+        });
+    };
+    /******************************************************************************************************************/
+    public static void addComboRatingListener(
+            TextField searchField,
+            ComboBox<String> genreDropdown,
+            MovieService movieService,
+            Provider provider
+    ) {
+        genreDropdown.valueProperty().addListener((
+                observable, oldValue, newValue) -> {
+            List<Movie> filteredMovies;
+
+            // If no genre is selected, fallback to all movies
+            if (newValue == "Filter by Rating") {
+                filteredMovies = movieService.getAllMovies();
+            } else {
+                filteredMovies = movieService.filterMoviesByCriteria(null, Double.valueOf(newValue), null);
+            }
+
+            // Apply search query filtering **only if there is text**
+            String query = searchField.getText().trim();
+            if (!query.isEmpty()) {
+                String lowerCaseQuery = query.toLowerCase();
+                filteredMovies = filteredMovies.stream()
+                        .filter(movie -> movie.title().toLowerCase().contains(lowerCaseQuery)
+                                || movie.description().toLowerCase().contains(lowerCaseQuery))
+                        .collect(Collectors.toList());
+            }
+
+
+            // Update UI with the final filtered list
+            FrontendHelper.updateMovieList(filteredMovies, provider);
+        });
+    };
 
 }

@@ -23,5 +23,13 @@ public class Provider {
     @Setter
     public ComboBox<Genre> genreDropdownCombo;
 
+    @Getter
+    @Setter
+    public ComboBox<String> releaseYearDropdownCombo;
+
+    @Getter
+    @Setter
+    public ComboBox<String> ratingDropdownCombo;
+
     public static Provider getProvider() { return instance; }
 };

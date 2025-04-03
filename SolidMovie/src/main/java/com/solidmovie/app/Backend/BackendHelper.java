@@ -3,7 +3,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solidmovie.app.Backend.Model.Movie;
 
 
-
 //helper class to extract methods
 public class BackendHelper {
 
@@ -21,5 +20,4 @@ public class BackendHelper {
        }
        return null;
    }
-
 }

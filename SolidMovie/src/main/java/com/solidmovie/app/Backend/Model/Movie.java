@@ -8,7 +8,7 @@ import java.util.List;
 public record Movie(String id, String title, List<Genre> genres,
                     Integer releaseYear, String description, String imgUrl,
                     Integer lengthInMinutes, List<String> directors, List<String> writers,
-                    List<String> mainCast, Integer rating) {
+                    List<String> mainCast, Double rating) {
     //for simplified tests we will use this constructor so that we don't have to create
     //a movie with all the fields from the second constructor
     public Movie (String title, String description, List<Genre> genres){
@@ -33,7 +33,7 @@ public record Movie(String id, String title, List<Genre> genres,
             @JsonProperty("directors") List<String> directors,
             @JsonProperty("writers") List<String> writers,
             @JsonProperty("mainCast") List<String> mainCast,
-            @JsonProperty("rating") Integer rating
+            @JsonProperty("rating") Double rating
     ) {
         this.id = id;
         this.releaseYear = releaseYear;
