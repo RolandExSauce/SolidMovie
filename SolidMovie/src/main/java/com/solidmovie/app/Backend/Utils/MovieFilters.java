@@ -18,5 +18,5 @@ public class MovieFilters {
         return year == null ?
                 movie -> true :
                 movie -> year.equals(movie.releaseYear());  // Use equals() instead of ==
-    }
+    };
 };

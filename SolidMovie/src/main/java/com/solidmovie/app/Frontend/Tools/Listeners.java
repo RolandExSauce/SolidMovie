@@ -18,7 +18,8 @@ public class Listeners {
             MovieService movieService,
             Provider provider
     ) {
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+        searchField.textProperty().addListener((observable,
+                                                oldValue, newValue) -> {
             String query = newValue.trim();
             Genre selectedGenre = genreDropdown.getValue();
 
@@ -98,7 +99,8 @@ public class Listeners {
             if (newValue == "Filter by Release Year") {
                 filteredMovies = movieService.getAllMovies();
             } else {
-                filteredMovies = movieService.filterMoviesByCriteria(null, null, Integer.valueOf(newValue));
+                filteredMovies = movieService.filterMoviesByCriteria(
+                        null, null, Integer.valueOf(newValue));
             };
 
             // Apply search query filtering **only if there is text**
@@ -130,7 +132,8 @@ public class Listeners {
             if (newValue == "Filter by Rating") {
                 filteredMovies = movieService.getAllMovies();
             } else {
-                filteredMovies = movieService.filterMoviesByCriteria(null, Double.valueOf(newValue), null);
+                filteredMovies = movieService.filterMoviesByCriteria(
+                        null, Double.valueOf(newValue),null);
             }
 
             // Apply search query filtering **only if there is text**
@@ -141,7 +144,7 @@ public class Listeners {
                         .filter(movie -> movie.title().toLowerCase().contains(lowerCaseQuery)
                                 || movie.description().toLowerCase().contains(lowerCaseQuery))
                         .collect(Collectors.toList());
-            }
+            };
 
             // Update UI with the final filtered list
             FrontendHelper.updateMovieList(filteredMovies, provider);

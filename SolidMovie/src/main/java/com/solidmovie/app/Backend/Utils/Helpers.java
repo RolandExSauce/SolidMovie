@@ -1,10 +1,10 @@
-package com.solidmovie.app.Backend;
+package com.solidmovie.app.Backend.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solidmovie.app.Backend.Model.Movie;
 
 
 //helper class to extract methods
-public class BackendHelper {
+public class Helpers {
 
     //convert http response to
    public static Movie[] convertResponse (String res) {
