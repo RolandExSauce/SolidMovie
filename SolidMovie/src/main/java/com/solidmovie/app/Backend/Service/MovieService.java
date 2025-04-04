@@ -46,7 +46,8 @@ public class MovieService {
     };
     /******************************************************************************************************************/
     public List<Movie> filterMoviesByCriteria(Genre genre, Double minRating, Integer releaseYear) {
-        Predicate<Movie> filter = MovieFilters.byGenre(genre)
+        Predicate<Movie> filter =
+                MovieFilters.byGenre(genre)
                 .and(MovieFilters.byRating(minRating))
                 .and(MovieFilters.byReleaseYear(releaseYear));
         return movieRepository.getMOVIES().stream()

@@ -1,7 +1,6 @@
 package com.solidmovie.app.Backend.Utils;
 import com.solidmovie.app.Backend.Model.Movie;
 import com.solidmovie.app.Utils.Genre;
-
 import java.util.function.Predicate;
 
 
@@ -16,6 +15,8 @@ public class MovieFilters {
     }
 
     public static Predicate<Movie> byReleaseYear(Integer year) {
-        return year == null ? movie -> true : movie -> movie.releaseYear() == year;
+        return year == null ?
+                movie -> true :
+                movie -> year.equals(movie.releaseYear());  // Use equals() instead of ==
     }
 };

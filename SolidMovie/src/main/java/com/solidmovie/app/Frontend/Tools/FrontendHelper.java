@@ -18,14 +18,13 @@ public class FrontendHelper {
         };
     };
 
-    // Initialize the genre dropdown ComboBox for AppHeaderController
+    // Initialize all ComboBoxes for AppHeaderController
     public static void initializeComboBoxes(
             MovieService movieService,
             ComboBox<Genre> genreDropdownCombo,
             ComboBox<String> releaseYearDropdownCombo,
             ComboBox<String> ratingDropdownCombo
     ) {
-
         //get all movies:
         List<Movie> movies = movieService.getAllMovies();
 
@@ -43,7 +42,7 @@ public class FrontendHelper {
             protected void updateItem(Genre item, boolean empty) {
                 super.updateItem(item, empty);
                 setText((empty) ? Genre.NONE.toString() : item.toString());
-            }
+            };
         });
         /****************************************************************************/
         //add rating and release year
@@ -51,5 +50,5 @@ public class FrontendHelper {
             releaseYearDropdownCombo.getItems().add(String.valueOf(movie.releaseYear()));
             ratingDropdownCombo.getItems().add(String.valueOf(movie.rating()));
         };
-    }
+    };
 }

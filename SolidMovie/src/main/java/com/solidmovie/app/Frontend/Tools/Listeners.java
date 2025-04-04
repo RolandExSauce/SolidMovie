@@ -98,8 +98,8 @@ public class Listeners {
             if (newValue == "Filter by Release Year") {
                 filteredMovies = movieService.getAllMovies();
             } else {
-                filteredMovies = movieService.filterMoviesByCriteria(null, Double.valueOf(newValue), null);
-            }
+                filteredMovies = movieService.filterMoviesByCriteria(null, null, Integer.valueOf(newValue));
+            };
 
             // Apply search query filtering **only if there is text**
             String query = searchField.getText().trim();
